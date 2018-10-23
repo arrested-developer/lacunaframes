@@ -1,3 +1,4 @@
+// import styles
 import './style.scss';
 
 // rotate sections to starting points
@@ -7,6 +8,7 @@ window.addEventListener('scroll', () => {
   const frame = document.querySelector('#frame');
   const spinContainers = document.querySelectorAll('.spinContainer');
   const zoomContainers = document.querySelectorAll('.zoomContainer');
+  const textContainers = document.querySelectorAll('.text-content');
   const pageHeight = pageContainer.getBoundingClientRect().height;
   const scrolledDist = scrollTracker.getBoundingClientRect().top;
   let rotation = (scrolledDist / (pageHeight * 3)) * 270;
@@ -18,6 +20,9 @@ window.addEventListener('scroll', () => {
   );
   frame.style.transform = `rotate(${setRotation}deg)`;
   spinContainers.forEach(
+    container => (container.style.transform = `rotate(${setRotation}deg)`)
+  );
+  textContainers.forEach(
     container => (container.style.transform = `rotate(${setRotation}deg)`)
   );
   const showText = id => {
