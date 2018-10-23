@@ -1,0 +1,7 @@
+@font-face {
+  font-family: 'Form';
+  src: url('Form-Regular.woff2') format('woff2'),
+    url('Form-Regular.woff') format('woff');
+}
+
+$form: Form, serif;
