@@ -1,6 +1,4 @@
 import Tweezer from 'tweezer.js';
-
-// import styles
 import './style/style.scss';
 
 // rotate sections to starting points
@@ -99,6 +97,8 @@ const showNext = (paragraphs, current) => {
 
 makeControls(['#two', '#three']);
 
+// use code below if removing pagination on larger screens
+
 // const removeControls = idArray => {
 //   idArray.forEach(id => {
 //     const paragraphs = Array.from(document.querySelectorAll(`${id} p`));
@@ -125,6 +125,12 @@ const links = {
   four: document.querySelector('#four header a'),
 };
 
+const pageContainer = document.querySelector('.pageContainer');
+let pageHeight = pageContainer.getBoundingClientRect().height;
+window.addEventListener('resize', () => {
+  pageHeight = pageContainer.getBoundingClientRect().height;
+});
+
 links.one.addEventListener('click', e => {
   e.preventDefault();
   showText('#one');
@@ -134,17 +140,17 @@ links.one.addEventListener('click', e => {
 links.two.addEventListener('click', e => {
   e.preventDefault();
   //window.scroll(0, window.innerHeight);
-  smoothScroll(window.outerHeight);
+  smoothScroll(pageHeight);
 });
 
 links.three.addEventListener('click', e => {
   e.preventDefault();
-  smoothScroll(window.outerHeight * 2);
+  smoothScroll(pageHeight * 2);
 });
 
 links.four.addEventListener('click', e => {
   e.preventDefault();
-  smoothScroll(window.outerHeight * 3);
+  smoothScroll(pageHeight * 3);
 });
 
 const smoothScroll = pos => {
