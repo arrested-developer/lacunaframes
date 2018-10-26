@@ -43,8 +43,8 @@ const showText = id => {
   document.querySelector(id).style.zIndex = 999;
   document
     .querySelectorAll('.text-content')
-    .forEach(elem => (elem.style.display = 'none'));
-  document.querySelector(`${id} .text-content`).style.display = 'flex';
+    .forEach(elem => (elem.style.opacity = 0));
+  document.querySelector(`${id} .text-content`).style.opacity = 1;
 };
 
 const makeControls = idArray => {
@@ -54,7 +54,10 @@ const makeControls = idArray => {
       let current = 0;
       const max = paragraphs.length - 1;
       const container = document.querySelector(`${id} .zoomContainer`);
-      paragraphs.slice(1).map(p => (p.style.display = 'none'));
+      paragraphs.slice(1).map(p => {
+        p.style.transform = 'translateX(1000px)';
+        p.style.opacity = 0;
+      });
       const controls = document.createElement('div');
       controls.setAttribute('aria-hidden', 'true');
       const back = document.createElement('a');
@@ -93,8 +96,42 @@ const makeControls = idArray => {
 };
 
 const showNext = (paragraphs, current, animateFrom) => {
-  paragraphs.map(p => (p.style.display = 'none'));
-  paragraphs[current].style.display = 'block';
+  // paragraphs.map(p => (p.style.display = 'none'));
+  // paragraphs[current].style.display = 'block';
+  // paragraphs.slice(0, current).map(p => {
+  //   p.style.transform = `translateX(${-1 * animateFrom}px)`;
+  //   p.style.opacity = 0;
+  // });
+  // paragraphs.slice(current, paragraphs.length).map(p => {
+  //   p.style.transform = `translateX(${animateFrom}px)`;
+  //   p.style.opacity = 0;
+  // });
+  if (animateFrom > 0) {
+    new Tweezer({
+      start: 0,
+      end: -1 * animateFrom,
+      duration: 400,
+    })
+      .on(
+        'tick',
+        x => (paragraphs[current - 1].style.transform = `translateX(${x}px)`)
+      )
+      .on('done', () => (paragraphs[current - 1].style.opacity = 0))
+      .begin();
+  } else {
+    new Tweezer({
+      start: 0,
+      end: -1 * animateFrom,
+      duration: 400,
+    })
+      .on(
+        'tick',
+        x => (paragraphs[current + 1].style.transform = `translateX(${x}px)`)
+      )
+      .on('done', () => (paragraphs[current + 1].style.opacity = 0))
+      .begin();
+  }
+  paragraphs[current].style.opacity = 1;
   paragraphs[current].style.transform = `translateX(${animateFrom}px)`;
   new Tweezer({
     start: animateFrom,
