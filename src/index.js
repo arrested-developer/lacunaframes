@@ -1,5 +1,6 @@
 import Tweezer from 'tweezer.js';
 import './style/style.scss';
+import mapImage from './img/lacuna-map.jpg';
 
 // rotate sections to starting points
 window.addEventListener('scroll', () => {
@@ -55,6 +56,7 @@ const makeControls = idArray => {
       const container = document.querySelector(`${id} .zoomContainer`);
       paragraphs.slice(1).map(p => (p.style.display = 'none'));
       const controls = document.createElement('div');
+      controls.setAttribute('aria-hidden', 'true');
       const back = document.createElement('a');
       const next = document.createElement('a');
       back.innerText = '<';
@@ -68,7 +70,7 @@ const makeControls = idArray => {
         if (current === 0) {
           e.target.style.visibility = 'hidden';
         }
-        showNext(paragraphs, current);
+        showNext(paragraphs, current, -1000);
       });
       next.innerText = '>';
       next.addEventListener('click', e => {
@@ -80,7 +82,7 @@ const makeControls = idArray => {
         if (current > 0) {
           back.style.visibility = 'visible';
         }
-        showNext(paragraphs, current);
+        showNext(paragraphs, current, 1000);
       });
       controls.classList.add('controls');
       controls.appendChild(back);
@@ -90,9 +92,20 @@ const makeControls = idArray => {
   });
 };
 
-const showNext = (paragraphs, current) => {
+const showNext = (paragraphs, current, animateFrom) => {
   paragraphs.map(p => (p.style.display = 'none'));
   paragraphs[current].style.display = 'block';
+  paragraphs[current].style.transform = `translateX(${animateFrom}px)`;
+  new Tweezer({
+    start: animateFrom,
+    end: 0,
+    duration: 400,
+  })
+    .on(
+      'tick',
+      x => (paragraphs[current].style.transform = `translateX(${x}px)`)
+    )
+    .begin();
 };
 
 makeControls(['#two', '#three']);
@@ -123,6 +136,7 @@ const links = {
   two: document.querySelector('#two header a'),
   three: document.querySelector('#three header a'),
   four: document.querySelector('#four header a'),
+  map: document.querySelector('a[href="#map"]'),
 };
 
 const pageContainer = document.querySelector('.pageContainer');
@@ -162,3 +176,40 @@ const smoothScroll = pos => {
     .on('tick', y => window.scrollTo(0, y))
     .begin();
 };
+
+const mapContainer = document.querySelector('#four .zoomContainer');
+const mapCloser = document.createElement('a');
+mapCloser.href = '#closemap';
+mapCloser.title = 'Close Map';
+const map = document.createElement('img');
+map.src = mapImage;
+map.alt = 'Location Map';
+mapCloser.appendChild(map);
+mapContainer.appendChild(mapCloser);
+mapCloser.style.display = 'none';
+mapCloser.addEventListener('click', e => {
+  e.preventDefault();
+  new Tweezer({
+    start: 100,
+    end: 0,
+    duration: 300,
+  })
+    .on('tick', o => (mapCloser.style.opacity = o / 100))
+    .on('done', () => (mapCloser.style.display = 'none'))
+    .begin();
+});
+
+links.map.addEventListener('click', e => {
+  e.preventDefault();
+  if (mapCloser.style.display === 'none') {
+    mapCloser.style.opacity = 0;
+    mapCloser.style.display = 'block';
+    new Tweezer({
+      start: 0,
+      end: 100,
+      duration: 300,
+    })
+      .on('tick', o => (mapCloser.style.opacity = o / 100))
+      .begin();
+  }
+});
