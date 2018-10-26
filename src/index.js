@@ -1,3 +1,5 @@
+import Tweezer from 'tweezer.js';
+
 // import styles
 import './style/style.scss';
 
@@ -147,11 +149,10 @@ links.four.addEventListener('click', e => {
 
 const smoothScroll = pos => {
   const current = window.scrollY;
-  const diff = pos - current;
-  window.scroll(0, current + diff / 4);
-  if (Math.abs(pos - current) > 10) {
-    setTimeout(() => smoothScroll(pos), 20);
-  } else {
-    window.scroll(0, pos);
-  }
+  new Tweezer({
+    start: current,
+    end: pos,
+  })
+    .on('tick', y => window.scrollTo(0, y))
+    .begin();
 };
