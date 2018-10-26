@@ -134,17 +134,17 @@ links.one.addEventListener('click', e => {
 links.two.addEventListener('click', e => {
   e.preventDefault();
   //window.scroll(0, window.innerHeight);
-  smoothScroll(window.innerHeight);
+  smoothScroll(window.outerHeight);
 });
 
 links.three.addEventListener('click', e => {
   e.preventDefault();
-  smoothScroll(window.innerHeight * 2);
+  smoothScroll(window.outerHeight * 2);
 });
 
 links.four.addEventListener('click', e => {
   e.preventDefault();
-  smoothScroll(window.innerHeight * 3);
+  smoothScroll(window.outerHeight * 3);
 });
 
 const smoothScroll = pos => {
