@@ -1,5 +1,5 @@
 // import styles
-import './style.scss';
+import './style/style.scss';
 
 // rotate sections to starting points
 window.addEventListener('scroll', () => {
@@ -24,16 +24,6 @@ window.addEventListener('scroll', () => {
   textContainers.forEach(
     container => (container.style.transform = `rotate(${setRotation}deg)`)
   );
-  const showText = id => {
-    document
-      .querySelectorAll('section')
-      .forEach(section => (section.style.zIndex = 1));
-    document.querySelector(id).style.zIndex = 999;
-    document
-      .querySelectorAll('.text-content')
-      .forEach(elem => (elem.style.display = 'none'));
-    document.querySelector(`${id} .text-content`).style.display = 'flex';
-  };
   if (setRotation < 0 && setRotation > -45) {
     showText('#one');
   } else if (setRotation < -45 && setRotation > -135) {
@@ -44,6 +34,17 @@ window.addEventListener('scroll', () => {
     showText('#four');
   }
 });
+
+const showText = id => {
+  document
+    .querySelectorAll('section')
+    .forEach(section => (section.style.zIndex = 1));
+  document.querySelector(id).style.zIndex = 999;
+  document
+    .querySelectorAll('.text-content')
+    .forEach(elem => (elem.style.display = 'none'));
+  document.querySelector(`${id} .text-content`).style.display = 'flex';
+};
 
 const makeControls = idArray => {
   idArray.forEach(id => {
@@ -94,21 +95,63 @@ const showNext = (paragraphs, current) => {
   paragraphs[current].style.display = 'block';
 };
 
-const removeControls = idArray => {
-  idArray.forEach(id => {
-    const paragraphs = Array.from(document.querySelectorAll(`${id} p`));
-    paragraphs.map(p => (p.style.display = 'block'));
-  });
+makeControls(['#two', '#three']);
+
+// const removeControls = idArray => {
+//   idArray.forEach(id => {
+//     const paragraphs = Array.from(document.querySelectorAll(`${id} p`));
+//     paragraphs.map(p => (p.style.display = 'block'));
+//   });
+// };
+
+// if (window.innerHeight < 500 || window.innerWidth < 540) {
+//   makeControls(['#two', '#three']);
+// }
+
+// window.addEventListener('resize', () => {
+//   if (window.innerHeight < 500 || window.innerWidth < 540) {
+//     makeControls(['#two', '#three']);
+//   } else {
+//     removeControls(['#two', '#three']);
+//   }
+// });
+
+const links = {
+  one: document.querySelector('#one header a'),
+  two: document.querySelector('#two header a'),
+  three: document.querySelector('#three header a'),
+  four: document.querySelector('#four header a'),
 };
 
-if (window.innerHeight < 500 || window.innerWidth < 540) {
-  makeControls(['#two', '#three']);
-}
-
-window.addEventListener('resize', () => {
-  if (window.innerHeight < 500 || window.innerWidth < 540) {
-    makeControls(['#two', '#three']);
-  } else {
-    removeControls(['#two', '#three']);
-  }
+links.one.addEventListener('click', e => {
+  e.preventDefault();
+  showText('#one');
+  smoothScroll(0);
 });
+
+links.two.addEventListener('click', e => {
+  e.preventDefault();
+  //window.scroll(0, window.innerHeight);
+  smoothScroll(window.innerHeight);
+});
+
+links.three.addEventListener('click', e => {
+  e.preventDefault();
+  smoothScroll(window.innerHeight * 2);
+});
+
+links.four.addEventListener('click', e => {
+  e.preventDefault();
+  smoothScroll(window.innerHeight * 3);
+});
+
+const smoothScroll = pos => {
+  const current = window.scrollY;
+  const diff = pos - current;
+  window.scroll(0, current + diff / 4);
+  if (Math.abs(pos - current) > 10) {
+    setTimeout(() => smoothScroll(pos), 20);
+  } else {
+    window.scroll(0, pos);
+  }
+};
