@@ -14,12 +14,14 @@
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
+    "autoprefixer": "^9.3.1",
     "babel-loader": "^8.0.4",
     "css-loader": "^1.0.0",
     "eslint": "^5.7.0",
     "eslint-config-prettier": "^3.1.0",
     "file-loader": "^2.0.0",
     "node-sass": "^4.9.4",
+    "postcss-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "webpack": "^4.22.0",
@@ -28,5 +30,10 @@
   },
   "dependencies": {
     "tweezer.js": "^1.4.0"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

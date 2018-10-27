@@ -240,6 +240,7 @@ import mapImage from './img/lacuna-map.jpg';
   // show map when 'map' link is clicked
   links.map.addEventListener('click', e => {
     e.preventDefault();
+    // only show map if it is not already showing
     if (mapCloser.style.display === 'none') {
       mapCloser.style.opacity = 0;
       mapCloser.style.display = 'block';
