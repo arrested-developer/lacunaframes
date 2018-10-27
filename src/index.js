@@ -12,9 +12,9 @@ window.addEventListener('scroll', () => {
   const textContainers = document.querySelectorAll('.text-content');
   const pageHeight = pageContainer.getBoundingClientRect().height;
   const scrolledDist = scrollTracker.getBoundingClientRect().top;
-  let rotation = (scrolledDist / (pageHeight * 3)) * 270;
-  const setRotation = rotation > 0 ? 0 : rotation < -270 ? -270 : rotation;
-  const zoomFactor = Math.cos((setRotation / 135) * ((3 * Math.PI) / 2));
+  let rotation = (scrolledDist / (pageHeight * 4)) * 360;
+  const setRotation = rotation > 0 ? 0 : rotation < -360 ? -360 : rotation;
+  const zoomFactor = Math.cos((setRotation / 180) * ((4 * Math.PI) / 2));
   zoomContainers.forEach(
     container => (container.style.transform = `scale(${Math.abs(zoomFactor)})`)
   );
@@ -25,14 +25,19 @@ window.addEventListener('scroll', () => {
   textContainers.forEach(
     container => (container.style.transform = `rotate(${setRotation}deg)`)
   );
-  if (setRotation < 0 && setRotation > -45) {
+  console.log(setRotation);
+  if ((setRotation < 0 && setRotation > -45) || setRotation < -315) {
     showText('#one');
   } else if (setRotation < -45 && setRotation > -135) {
     showText('#two');
   } else if (setRotation < -135 && setRotation > -225) {
     showText('#three');
-  } else if (setRotation < -225) {
+  } else if (setRotation < -225 && setRotation > -315) {
     showText('#four');
+  }
+
+  if (setRotation === -360) {
+    window.scrollTo(0, 0);
   }
 });
 
@@ -185,7 +190,7 @@ window.addEventListener('resize', () => {
 links.one.addEventListener('click', e => {
   e.preventDefault();
   showText('#one');
-  smoothScroll(0);
+  smoothScroll(pageHeight * 4);
 });
 
 links.two.addEventListener('click', e => {
