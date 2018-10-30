@@ -47,9 +47,9 @@ import mapImage from './img/lacuna-map.jpg';
     if (setRotation === -360) {
       window.scrollTo(0, 1);
     }
-    if (setRotation === -0) {
-      window.scrollTo(0, pageHeight * 4);
-    }
+    // if (setRotation === -0) {
+    //   window.scrollTo(0, pageHeight * 4);
+    // }
   });
 
   // show text in the chosen section by id (#one, #two, etc.) and hide others
