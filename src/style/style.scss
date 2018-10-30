@@ -71,6 +71,11 @@ header > h1 > a {
   text-decoration: none;
 }
 
+#four header {
+  position: relative;
+  top: 1px;
+}
+
 #two {
   transform: rotate(90deg);
 }
